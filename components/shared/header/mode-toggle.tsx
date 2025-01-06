@@ -68,4 +68,5 @@ const ModeToggle = () => {
 
 export default ModeToggle;
 
+// notes:-
 // what is ring and ring offset
