@@ -1,7 +1,12 @@
-import { APP_NAME } from "@/lib/constants";
+import sampleData from "@/db/sample-data";
+import ProductList from "@/components/shared/product/product-list";
 
 const page = () => {
-  return <div>{APP_NAME}</div>;
+  return (
+    <>
+      <ProductList data={sampleData.products} title="New arrivals" limit={4} />
+    </>
+  );
 };
 
 export default page;
