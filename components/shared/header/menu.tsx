@@ -9,7 +9,9 @@ import {
   SheetDescription,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { EllipsisVertical } from "lucide-react";
+
+import { AlignJustify } from "lucide-react";
+
 const menu = () => {
   return (
     <div className="flex justify-end gap-3">
@@ -29,7 +31,7 @@ const menu = () => {
       <nav className="md:hidden">
         <Sheet>
           <SheetTrigger className="align-middle">
-            <EllipsisVertical />
+            <AlignJustify />
           </SheetTrigger>
           <SheetContent className="flex flex-col items-start">
             <SheetTitle>Menu</SheetTitle>
