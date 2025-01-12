@@ -15,7 +15,5 @@ export const getLatestProducts = async () => {
 
 //get single product by it's slug
 export const getProductBySlug = async (value: string) => {
-  const data = await prisma.product.findUnique({ where: { slug: value } });
-
-  return convertPrismaToJs(data);
+  return await prisma.product.findFirst({ where: { slug: value } });
 };
