@@ -1,7 +1,7 @@
 "use client";
 
 import { APP_NAME } from "@/lib/constants";
-import logo from "@/app/favicon.ico";
+import logo from "@/public/images/logo.svg";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 const NotFound = () => {
