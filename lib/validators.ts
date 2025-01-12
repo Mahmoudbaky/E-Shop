@@ -1,0 +1,48 @@
+import { z } from "zod";
+import { formatNumberWithDecimal } from "./utils";
+
+const currency = z
+  .string()
+  .refine((value) =>
+    /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value)))
+  );
+
+// schema for inserting products
+export const insertProductsSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  slug: z.string().min(3, "Slug must be at least 3 characters"),
+  category: z.string().min(3, "Category must be at least 3 characters"),
+  brand: z.string().min(3, "Brand must be at least 3 characters"),
+  description: z.string().min(3, "Description must be at least 3 characters"),
+  stock: z.coerce.number(), // the number that coming from the form will be in string coerce will convert it to number
+  images: z.array(z.string()).min(1, "Product must have at least one image"),
+  isFeatured: z.boolean(),
+  banner: z.string().nullable(),
+  price: currency,
+});
+
+/**
+ * explain the price configuration:- 
+ * 
+ * Type and Coercion:
+
+    The original type of price is a string (z.string()). This is because the input may come in as a string representation of a number.
+
+ *  Refinement and Validation:
+
+.refine((value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value)))):
+
+Number(value) converts the string to a number.
+
+formatNumberWithDecimal(Number(value)) applies a function, likely to format the number with two decimal places.
+
+^\d+(\.\d{2})?$ is a regular expression (regex) used to validate the format of the number. Let's break down this regex:
+
+^ asserts the position at the start of the string.
+
+\d+ matches one or more digits (0-9).
+
+(\.\d{2})?$ matches an optional period followed by exactly two digits (0-9), ensuring that the number can either be an integer or a decimal with two places.
+
+$ asserts the position at the end of the string.
+ */

@@ -13,7 +13,8 @@
 //  i used thid command to generate start the prisma stuio : npx prisma studio
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
