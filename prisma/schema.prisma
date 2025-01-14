@@ -38,3 +38,59 @@ model Product {
   banner      String?
   createdAt   DateTime @default(now()) @db.Timestamp(6)
 }
+
+model User {
+  id            String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String           @default("new_user")
+  email         String           @unique(map: "user_email_idx")
+  emailVerified DateTime?        @db.Timestamp(6)
+  image         String?
+  password      String?
+  role          String           @default("user")
+  address       Json?            @db.Json
+  payment       String?                     
+  createdAt     DateTime         @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime         @updatedAt
+  account       Account[]
+  session       Session[]
+
+}
+
+model Account {
+  userId            String          @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])  // to prevent redundancy instead of creating an id field we can use this field to be the id
+}
+
+model Session {
+  sessionToken String   @id
+  userId       String   @db.Uuid
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime    @default(now()) @db.Timestamp(6)
+  updatedAt DateTime    @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+}
