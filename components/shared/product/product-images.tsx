@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+
 const ProdcutImages = ({ images }: { images: string[] }) => {
   const [current, setCurrent] = useState(0);
 
@@ -16,7 +17,14 @@ const ProdcutImages = ({ images }: { images: string[] }) => {
       />
       <div className="flex">
         {images.map((image, index) => (
-          <div key={image} onClick={() => setCurrent(index)}>
+          <div
+            key={image}
+            onClick={() => setCurrent(index)}
+            className={cn(
+              "cursor-pointer mr-2 border border-gray-200",
+              current === index && "border-2 border-yellow-500"
+            )}
+          >
             <Image src={image} alt="image" width={100} height={100} />
           </div>
         ))}
