@@ -46,3 +46,9 @@ formatNumberWithDecimal(Number(value)) applies a function, likely to format the 
 
 $ asserts the position at the end of the string.
  */
+
+// schema for signing users in
+export const signInSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
