@@ -5,8 +5,9 @@ import { Label } from "@/components/ui/label";
 import { signInDefaultValues } from "@/lib/constants";
 import Link from "next/link";
 import { useActionState } from "react";
-// import { useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom"; // for interactivty and user experance
 import { signInWithCredentials } from "@/lib/actions/user.actions";
+import { useSearchParams } from "next/navigation";
 
 const CredentialsSigninForm = () => {
   const [data, action] = useActionState(signInWithCredentials, {
@@ -14,9 +15,22 @@ const CredentialsSigninForm = () => {
     message: "",
   });
 
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+
+  console.log(data);
+  const SignInButton = () => {
+    const { pending } = useFormStatus();
+
+    return (
+      <Button disabled={pending} className="w-full">
+        {pending ? "Signing in..." : "signin"}
+      </Button>
+    );
+  };
   return (
     <form action={action}>
-      {/* <input type='hidden' name='callbackUrl' value={callbackUrl} /> */}
+      <input type="hidden" name="callbackUrl" value={callbackUrl} />
       <div className="space-y-6">
         <div>
           <Label htmlFor="email">Email</Label>
@@ -41,9 +55,7 @@ const CredentialsSigninForm = () => {
           />
         </div>
         <div>
-          <Button type="submit" className="w-full">
-            Sign In
-          </Button>
+          <SignInButton />
         </div>
 
         {data && data.message && (

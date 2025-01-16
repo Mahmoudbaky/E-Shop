@@ -16,6 +16,8 @@ export const signInWithCredentials = async (
       password: formData.get("password"),
     });
 
+    // console.log(user);
+
     await signIn("credentials", user);
     return { success: true, message: "Sign in successful" };
   } catch (error) {
