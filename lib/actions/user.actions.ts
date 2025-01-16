@@ -31,5 +31,4 @@ export const signInWithCredentials = async (
 // Sign out
 export const signOutUser = async () => {
   await signOut();
-  return { success: true, message: "Sign out successful" };
 };
