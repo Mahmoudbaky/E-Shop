@@ -55,6 +55,8 @@ export const config = {
     async session({ session, user, trigger, token }: any) {
       // Set the user ID in the session object from the token's subject (sub) property
       session.user.id = token.sub;
+      session.user.role = token.role;
+      session.user.name = token.name;
 
       // If the session is being updated, set the user's name in the session object
       if (trigger === "update") {
@@ -64,7 +66,28 @@ export const config = {
       // Return the modified session object
       return session;
     },
+    // we need to customize the jwt token ... so we can add the user role to the token
+    async jwt({ session, user, trigger, token }: any) {
+      // Add role to the token
+      if (user) {
+        token.role = user.role;
+
+        // If user has no name then use the email
+        if (user.name == "new_user") {
+          token.name = user.email!.split("@")[0];
+
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { name: token.name },
+          });
+        }
+      }
+
+      return token;
+    },
   },
 } satisfies NextAuthConfig; // this line is added to satisfy the NextAuthConfig type "to solve the NextAuth(config) error"
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config);
+
+// split returns an array
