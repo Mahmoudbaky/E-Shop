@@ -8,6 +8,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom"; // for interactivty and user experance
 import { signInWithCredentials } from "@/lib/actions/user.actions";
 import { useSearchParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 const CredentialsSigninForm = () => {
   const [data, action] = useActionState(signInWithCredentials, {
@@ -24,7 +25,14 @@ const CredentialsSigninForm = () => {
 
     return (
       <Button disabled={pending} className="w-full">
-        {pending ? "Signing in..." : "signin"}
+        {pending ? (
+          <>
+            signing you in
+            <Loader2 className="animate-spin" />
+          </>
+        ) : (
+          "signin"
+        )}
       </Button>
     );
   };
