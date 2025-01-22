@@ -9,6 +9,7 @@ import { cartItemSchema, insertCartSchema } from "../validators";
 
 // re
 import { revalidatePath } from "next/cache";
+import { Prisma } from "@prisma/client";
 
 const calcPrice = (items: CartItem[]) => {
   const itemsPrice = round2(
@@ -71,23 +72,52 @@ export const addItemToCart = async (data: CartItem) => {
         message: `${product.name} added to cart`,
       };
     } else {
-      console.log({ cartProducts: cart.items[0].productId });
+      // console.log({ cartProducts: cart.items[0].productId });
 
-      // const isExist = item.productId === cart.items.find(product => productId === item.productId) ? ture : false ;
+      const itemExist = (cart.items as CartItem[]).find(
+        (i) => i.productId === item.productId
+      );
+
+      console.log({ isExist: itemExist });
+
+      if (itemExist) {
+        // check stock
+        if (product.stock < itemExist.qty + 1) {
+          throw new Error("Product out of stock");
+        }
+
+        // increase qty
+        (cart.items as CartItem[]).find(
+          (i) => i.productId === item.productId
+        )!.qty = itemExist.qty + 1;
+      } else {
+        // check stock
+        if (product.stock < 1) {
+          throw new Error("Product out of stock");
+        }
+
+        // add new item
+        (cart.items as CartItem[]).push(item);
+      }
+
+      // update the database
+      await prisma.cart.update({
+        where: { id: cart.id },
+        data: {
+          items: cart.items as Prisma.CartUpdateitemsInput[],
+          ...calcPrice(cart.items as CartItem[]),
+        },
+      });
+
+      revalidatePath(`/product/${product.slug}`);
+
+      return {
+        success: true,
+        message: `${product.name} ${
+          itemExist ? "updated in" : "added to"
+        } cart`,
+      };
     }
-
-    //test consoles
-    // console.log({
-    //   sessionCartId: sessionCartId,
-    //   userId: userId,
-    //   session: session,
-    //   product: product,
-    // });
-
-    return {
-      success: true,
-      message: "Item add to cart",
-    };
   } catch (error) {
     return {
       success: false,
