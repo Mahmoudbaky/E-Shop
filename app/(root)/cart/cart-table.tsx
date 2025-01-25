@@ -71,9 +71,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         type="button"
                         onClick={() =>
                           startTransition(async () => {
-                            const res = await removeItemFromCart(
-                              item.productId
-                            );
+                            const res = await removeFromCart(item.productId);
 
                             if (!res.success) {
                               toast({
