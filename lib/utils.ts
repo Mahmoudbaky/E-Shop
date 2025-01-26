@@ -62,3 +62,33 @@ export const round2 = (value: number | string) => {
 };
 
 // explain "Number.EPSILON" :
+
+const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
+  currency: "USD",
+  style: "currency",
+  maximumFractionDigits: 2,
+});
+
+/**
+ * Intl:
+ * Intl is a built-in object in JavaScript that provides language-sensitive string comparison, 
+ * number formatting, and date and time formatting. It's short for "Internationalization,"
+ *  
+ * ex:
+ * const currencyFormatter = new Intl.NumberFormat("en-US", {
+   style: "currency",
+   currency: "USD" });
+   console.log(currencyFormatter.format(123456.789)); // Output: $123,456.79
+ * 
+ *
+ * */
+
+export const formatCurrency = (value: number | string | null) => {
+  if (typeof value === "number") {
+    return CURRENCY_FORMATTER.format(value);
+  } else if (typeof value === "string") {
+    return CURRENCY_FORMATTER.format(Number(value));
+  } else {
+    return "NaN";
+  }
+};
