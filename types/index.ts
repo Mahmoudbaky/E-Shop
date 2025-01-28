@@ -15,7 +15,7 @@ export type Product = z.infer<typeof insertProductsSchema> & {
 export type CartItem = z.infer<typeof cartItemSchema>;
 export type Cart = z.infer<typeof insertCartSchema>;
 
-export type addressSchema = z.infer<typeof shippingAddressSchema>;
+export type ShippingAddress = z.infer<typeof shippingAddressSchema>;
 
 /**
  * explination for & sign:
