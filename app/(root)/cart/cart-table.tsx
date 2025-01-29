@@ -32,9 +32,9 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
       {!cart || cart.items.length === 0 ? (
         <div>
           <p>Your cart is empty</p>
-          <Link href="/">
-            <a className="btn btn-primary">Continue Shopping</a>
-          </Link>
+          <Button className="mt-5">
+            <Link href="/">Continue Shopping</Link>
+          </Button>
         </div>
       ) : (
         <div className="grid md:grid-cols-4 md:gap-5">

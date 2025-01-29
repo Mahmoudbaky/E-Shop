@@ -1,10 +1,15 @@
 "use server";
-import { signInSchema, signUpSchema } from "../validators";
-import { signIn, signOut } from "@/auth";
+import {
+  shippingAddressSchema,
+  signInSchema,
+  signUpSchema,
+} from "../validators";
+import { auth, signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
 import { formatError } from "../utils";
+import { ShippingAddress } from "@/types";
 
 // Sign in with credentials
 export const signInWithCredentials = async (
@@ -87,4 +92,24 @@ export const getUserById = async (id: string) => {
     throw new Error("User not found");
   }
   return user;
+};
+
+// update user address  (i wrote it)
+export const updateUserAddress = async (address: ShippingAddress) => {
+  try {
+    const session = await auth();
+
+    if (!session?.user?.id) throw new Error("User ID is undefined"); // i  have to check if the id is exist or not before i pass it to the getUser function
+
+    const validatedAddress = shippingAddressSchema.parse(address); // i have to validate the address using shippingAddressSchema before i pass it to the update function
+
+    await prisma.user.update({
+      where: { id: session?.user?.id },
+      data: { address: validatedAddress },
+    });
+
+    return { success: false, message: "User address updated successfully" };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
 };
