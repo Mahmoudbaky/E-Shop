@@ -31,7 +31,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
     defaultValues: address || shippingAddressDefaultValues,
   });
 
-  const onSubmit = ({ values }: { values: any }) => {
+  const onSubmit = ({ values }: { values: ShippingAddress }) => {
     console.log(values);
     return;
   };
