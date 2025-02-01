@@ -77,19 +77,19 @@ const PaymentMethodForm = ({
                         onValueChange={field.onChange}
                         className="flex flex-col space-y-2"
                       >
-                        {PAYMENT_METHODS.map((method) => (
+                        {PAYMENT_METHODS.map((paymentMethod) => (
                           <FormItem
-                            key={method}
-                            className="flex items-center space-x-3 space-y-0 "
+                            key={paymentMethod}
+                            className="flex items-center space-x-3 space-y-0"
                           >
                             <FormControl>
                               <RadioGroupItem
-                                value={method}
-                                checked={field.value === method}
+                                value={paymentMethod}
+                                checked={field.value === paymentMethod}
                               />
                             </FormControl>
                             <FormLabel className="font-normal">
-                              {method}
+                              {paymentMethod}
                             </FormLabel>
                           </FormItem>
                         ))}
