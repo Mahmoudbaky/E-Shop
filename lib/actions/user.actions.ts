@@ -11,6 +11,7 @@ import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
 import { formatError } from "../utils";
 import { ShippingAddress } from "@/types";
+import { z } from "zod";
 
 // Sign in with credentials
 export const signInWithCredentials = async (
