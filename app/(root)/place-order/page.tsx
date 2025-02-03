@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
-// import PlaceOrderForm from "./place-order-form";
+import PlaceOrderForm from "./place-order-form";
 
 const PlaceOrderPage = async () => {
   const cart = await getMyCart();
@@ -127,7 +127,7 @@ const PlaceOrderPage = async () => {
                 <div>Total</div>
                 <div>{formatCurrency(cart.totalPrice)}</div>
               </div>
-              {/* <PlaceOrderForm /> */}
+              <PlaceOrderForm />
             </CardContent>
           </Card>
         </div>
