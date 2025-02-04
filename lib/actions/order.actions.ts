@@ -1,7 +1,7 @@
 "use server";
 
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { formatError } from "../utils";
+import { convertPrismaToJs, formatError } from "../utils";
 import { auth } from "@/auth";
 import { getMyCart } from "./cart.action";
 import { getUserById } from "./user.actions";
@@ -95,4 +95,21 @@ export const createOrder = async () => {
     if (isRedirectError(error)) throw error;
     return { success: false, message: formatError(error) };
   }
+};
+
+// get order by id
+export const getOrderById = async (orderId: string) => {
+  const fetchedOrder = await prisma.order.findFirst({
+    where: { id: orderId },
+    include: {
+      orderitems: true, // this makes sure that the orderitems is included in the fetchedOrder variable
+      user: {
+        select: { name: true, email: true }, // i can also fetch some user data but not all of them using this syntax
+      },
+    },
+  });
+
+  if (!fetchedOrder) throw new Error("order not found");
+
+  return convertPrismaToJs(fetchedOrder);
 };
