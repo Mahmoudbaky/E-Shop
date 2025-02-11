@@ -5,7 +5,7 @@ import { faker } from "@faker-js/faker";
 
 async function main() {
   const numberOfRecords = 20000;
-  const batchSize = 100;
+  const batchSize = 1000;
 
   for (let i = 0; i < numberOfRecords; i += batchSize) {
     const products = Array.from(

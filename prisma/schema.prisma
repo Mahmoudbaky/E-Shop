@@ -38,6 +38,11 @@ model Product {
   banner      String?
   createdAt   DateTime    @default(now()) @db.Timestamp(6)
   OrderItem   OrderItem[]
+
+  @@index([name])
+  @@index([id])
+  @@index([category])
+  @@index([brand])
 }
 
 model User {

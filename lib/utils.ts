@@ -18,18 +18,14 @@ export function formatNumberWithDecimal(num: number): string {
 }
 
 /**
- * Type script notes :
  *
- * <T> : this called typescript generic and it makes the function accept any type of parameters (string , object, prisma object , ....)
- * (value: T) : the type of the input parameter
- * : T : the type of the return from this function
  *
  *
  */
 
 // Format errors
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function formatError(error: any) {
+export const formatError = (error: any) => {
   if (error.name === "ZodError") {
     // Handle Zod error
     const fieldErrors = Object.keys(error.errors).map(
@@ -50,7 +46,7 @@ export function formatError(error: any) {
       ? error.message
       : JSON.stringify(error.message);
   }
-}
+};
 
 export const round2 = (value: number | string) => {
   if (typeof value === "number") {
@@ -70,20 +66,6 @@ const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
 
-/**
- * Intl:
- * Intl is a built-in object in JavaScript that provides language-sensitive string comparison, 
- * number formatting, and date and time formatting. It's short for "Internationalization,"
- *  
- * ex:
- * const currencyFormatter = new Intl.NumberFormat("en-US", {
-   style: "currency",
-   currency: "USD" });
-   console.log(currencyFormatter.format(123456.789)); // Output: $123,456.79
- * 
- *
- * */
-
 export const formatCurrency = (value: number | string | null) => {
   if (typeof value === "number") {
     return CURRENCY_FORMATTER.format(value);
@@ -98,12 +80,6 @@ export const formatCurrency = (value: number | string | null) => {
 export const formatId = (id: string) => {
   return `..${id.substring(id.length - 6)}`;
 };
-
-/**
- * str.substring(indexStart, indexEnd)
- * indexStart: The position where to start the extraction. The first character has an index of 0.
- * indexEnd (optional): The position where to end the extraction. The character at this index will not be included. If omitted, substring extracts to the end of the string.
- */
 
 // Formate the data and time
 export const formatDateTime = (dateString: Date) => {
@@ -169,3 +145,35 @@ export function formUrlQuery({
     }
   );
 }
+
+// Format Number
+const NUMBER_FORMATTER = new Intl.NumberFormat("en-US");
+
+export const formatNumber = (number: number) => {
+  return NUMBER_FORMATTER.format(number);
+};
+
+/**
+ * study section:- 
+ * -------------- 
+  ** Intl: Intl is a built-in object in JavaScript that provides language-sensitive string comparison, 
+ * number formatting, and date and time formatting. It's short for "Internationalization,"
+ *  
+ * ex: const currencyFormatter = new Intl.NumberFormat("en-US", {
+   style: "currency",
+   currency: "USD" });
+   console.log(currencyFormatter.format(123456.789)); // Output: $123,456.79
+
+
+  ** str.substring(indexStart, indexEnd)
+ * indexStart: The position where to start the extraction. The first character has an index of 0.
+ * indexEnd (optional): The position where to end the extraction. The character at this index will not be included. If omitted, substring extracts to the end of the string.
+ * 
+ * 
+ * Type script notes :
+ * <T> : this called typescript generic and it makes the function accept any type of parameters (string , object, prisma object , ....)
+ * (value: T) : the type of the input parameter
+ * : T : the type of the return from this function
+ * 
+ * 
+ */
