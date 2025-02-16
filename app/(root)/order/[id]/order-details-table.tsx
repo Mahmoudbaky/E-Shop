@@ -24,14 +24,18 @@ import {
 import {
   approvePayPalOrder,
   createPayPalOrder,
+  updateOrderToPaidCOD,
+  deliverOrder,
 } from "@/lib/actions/order.actions";
 
 const OrderDetailsTable = ({
   order,
   paypalClientId,
+  isAdmin,
 }: {
   order: Order;
   paypalClientId: string;
+  isAdmin: boolean;
 }) => {
   const {
     id,
@@ -82,6 +86,54 @@ const OrderDetailsTable = ({
       variant: res.success ? "default" : "destructive",
       description: res.message,
     });
+  };
+
+  // Button to mark order as paid
+  const MarkAsPaidButton = () => {
+    const [isPending, startTransition] = useTransition();
+    const { toast } = useToast();
+
+    return (
+      <Button
+        type="button"
+        disabled={isPending}
+        onClick={() =>
+          startTransition(async () => {
+            const res = await updateOrderToPaidCOD(order.id);
+            toast({
+              variant: res.success ? "default" : "destructive",
+              description: res.message,
+            });
+          })
+        }
+      >
+        {isPending ? "processing..." : "Mark As Paid"}
+      </Button>
+    );
+  };
+
+  // Button to mark order as delivered
+  const MarkAsDeliveredButton = () => {
+    const [isPending, startTransition] = useTransition();
+    const { toast } = useToast();
+
+    return (
+      <Button
+        type="button"
+        disabled={isPending}
+        onClick={() =>
+          startTransition(async () => {
+            const res = await deliverOrder(order.id);
+            toast({
+              variant: res.success ? "default" : "destructive",
+              description: res.message,
+            });
+          })
+        }
+      >
+        {isPending ? "processing..." : "Mark As Delivered"}
+      </Button>
+    );
   };
 
   return (
@@ -179,6 +231,7 @@ const OrderDetailsTable = ({
                 <div>Total</div>
                 <div>{formatCurrency(totalPrice)}</div>
               </div>
+              {/** paypal actions*/}
               {!isPaid && paymentMethod === "PayPal" && (
                 <div>
                   <PayPalScriptProvider options={{ clientId: paypalClientId }}>
@@ -190,6 +243,12 @@ const OrderDetailsTable = ({
                   </PayPalScriptProvider>
                 </div>
               )}
+
+              {/** admin cod actions*/}
+              {isAdmin === true &&
+                !isPaid &&
+                paymentMethod === "CashOnDelivery" && <MarkAsPaidButton />}
+              {isAdmin && isPaid && !isDelivered && <MarkAsDeliveredButton />}
             </CardContent>
           </Card>
         </div>
