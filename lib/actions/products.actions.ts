@@ -3,6 +3,8 @@ import { prisma } from "@/db/prisma";
 import { convertPrismaToJs, formatError } from "../utils";
 import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { insertProductsSchema, updateProductsSchema } from "../validators";
 
 // get latest products
 export const getLatestProducts = async () => {
@@ -32,6 +34,7 @@ export const getAllProducts = async ({
   category?: string;
 }) => {
   const data = await prisma.product.findMany({
+    orderBy: { createdAt: "desc" },
     skip: (page - 1) * limit, // how many products will be skiped in take
     take: limit, // how many  products will be taken
   });
@@ -63,5 +66,60 @@ export const deleteProduct = async (id: string) => {
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
+  }
+};
+
+// create product by admin
+export const createProduct = async (
+  data: z.infer<typeof insertProductsSchema>
+) => {
+  try {
+    const product = insertProductsSchema.parse(data);
+    await prisma.product.create({
+      data: product,
+    });
+
+    revalidatePath("/admin/products");
+
+    return {
+      success: true,
+      message: "Product created",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+};
+
+// update product by admin
+export const updateProduct = async (
+  data: z.infer<typeof updateProductsSchema>
+) => {
+  try {
+    const product = updateProductsSchema.parse(data);
+    const exsitProduct = await prisma.product.findFirst({
+      where: { id: data.id },
+    });
+
+    if (!exsitProduct) throw new Error("Product dose not exist");
+
+    await prisma.product.update({
+      where: { id: exsitProduct.id },
+      data: product,
+    });
+
+    revalidatePath("/admin/products");
+
+    return {
+      success: true,
+      message: "Product updated",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
   }
 };

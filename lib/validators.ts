@@ -22,31 +22,9 @@ export const insertProductsSchema = z.object({
   price: currency,
 });
 
-/**
- * explain the price configuration:- 
- * 
- * Type and Coercion:
-
-    The original type of price is a string (z.string()). This is because the input may come in as a string representation of a number.
-
- *  Refinement and Validation:
-
-.refine((value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value)))):
-
-Number(value) converts the string to a number.
-
-formatNumberWithDecimal(Number(value)) applies a function, likely to format the number with two decimal places.
-
-^\d+(\.\d{2})?$ is a regular expression (regex) used to validate the format of the number. Let's break down this regex:
-
-^ asserts the position at the start of the string.
-
-\d+ matches one or more digits (0-9).
-
-(\.\d{2})?$ matches an optional period followed by exactly two digits (0-9), ensuring that the number can either be an integer or a decimal with two places.
-
-$ asserts the position at the end of the string.
- */
+export const updateProductsSchema = insertProductsSchema.extend({
+  id: z.string().min(1, "Id is required"),
+});
 
 // schema for signing users in
 export const signInSchema = z.object({
@@ -143,3 +121,29 @@ export const updateProfileSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   email: z.string().min(3, "Email must be at least 3 characters"),
 });
+
+/**
+ * explain the price configuration:- 
+ * 
+ * Type and Coercion:
+
+    The original type of price is a string (z.string()). This is because the input may come in as a string representation of a number.
+
+ *  Refinement and Validation:
+
+.refine((value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value)))):
+
+Number(value) converts the string to a number.
+
+formatNumberWithDecimal(Number(value)) applies a function, likely to format the number with two decimal places.
+
+^\d+(\.\d{2})?$ is a regular expression (regex) used to validate the format of the number. Let's break down this regex:
+
+^ asserts the position at the start of the string.
+
+\d+ matches one or more digits (0-9).
+
+(\.\d{2})?$ matches an optional period followed by exactly two digits (0-9), ensuring that the number can either be an integer or a decimal with two places.
+
+$ asserts the position at the end of the string.
+ */
