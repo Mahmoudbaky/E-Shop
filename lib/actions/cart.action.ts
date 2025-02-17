@@ -1,11 +1,11 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { CartItem } from "@/types";
 import { convertPrismaToJs, formatError, round2 } from "../utils";
 import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
 import { cartItemSchema, insertCartSchema } from "../validators";
+import { cookies } from "next/headers";
 
 // re
 import { revalidatePath } from "next/cache";
@@ -210,6 +210,33 @@ export const removeFromCart = async (productId: string) => {
     };
   }
 };
+
+export async function mergeCartsOnLogin(userId: string) {
+  const sessionCartId = (await cookies()).get("sessionCartId")?.value;
+
+  if (!sessionCartId) return;
+
+  try {
+    const sessionCart = await prisma.cart.findFirst({
+      where: { sessionCartId },
+    });
+
+    if (sessionCart) {
+      // Delete current user cart if exists
+      await prisma.cart.deleteMany({
+        where: { userId },
+      });
+
+      // Update session cart with user ID
+      await prisma.cart.update({
+        where: { id: sessionCart.id },
+        data: { userId },
+      });
+    }
+  } catch (error) {
+    console.error("Error merging carts:", error);
+  }
+}
 
 /**
  * what is revalidatePath in nextJs :
