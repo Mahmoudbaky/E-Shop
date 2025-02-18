@@ -20,7 +20,7 @@ import slugify from "slugify";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-// import { UploadButton } from "@/lib/uploadthing";
+import { UploadButton } from "@/lib/uploadthing";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 import { createProduct, updateProduct } from "@/lib/actions/products.actions";
@@ -47,7 +47,7 @@ const ProductForm = ({
       product && type === "Update" ? product : productDefaultValues,
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
+  const onSubmit: SubmitHandler<z.infer<typeof insertProductsSchema>> = async (
     values
   ) => {
     // On Create
@@ -90,7 +90,7 @@ const ProductForm = ({
     }
   };
 
-  //   const images = form.watch("images");
+  const images = form.watch("images");
   //   const isFeatured = form.watch("isFeatured");
   //   const banner = form.watch("banner");
 
@@ -98,7 +98,7 @@ const ProductForm = ({
     <Form {...form}>
       <form
         method="POST"
-        // onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8"
       >
         <div className="flex flex-col md:flex-row gap-5">
@@ -110,7 +110,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductsSchema>,
                 "name"
               >;
             }) => (
@@ -131,7 +131,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductsSchema>,
                 "slug"
               >;
             }) => (
@@ -168,7 +168,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductsSchema>,
                 "category"
               >;
             }) => (
@@ -189,7 +189,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductsSchema>,
                 "brand"
               >;
             }) => (
@@ -212,7 +212,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductsSchema>,
                 "price"
               >;
             }) => (
@@ -233,7 +233,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductsSchema>,
                 "stock"
               >;
             }) => (
@@ -346,7 +346,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductsSchema>,
                 "description"
               >;
             }) => (
@@ -380,3 +380,16 @@ const ProductForm = ({
 };
 
 export default ProductForm;
+
+/**
+ *
+ * Notes: -
+ * --------
+ * Watches the "images" field in the form and assigns its value to the `images` constant.
+ *
+ * The `form.watch` function is used to subscribe to changes in the form's field values.
+ * It allows you to monitor the value of a specific field, in this case, the "images" field,
+ * and react to any changes made to it. This is particularly useful for dynamically updating
+ * the UI based on form input.
+ *
+ */
