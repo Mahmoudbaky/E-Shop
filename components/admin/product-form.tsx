@@ -24,7 +24,7 @@ import { UploadButton } from "@/lib/uploadthing";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 import { createProduct, updateProduct } from "@/lib/actions/products.actions";
-// import { Checkbox } from "../ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 
 const ProductForm = ({
   type,
@@ -91,8 +91,8 @@ const ProductForm = ({
   };
 
   const images = form.watch("images");
-  //   const isFeatured = form.watch("isFeatured");
-  //   const banner = form.watch("banner");
+  const isFeatured = form.watch("isFeatured");
+  const banner = form.watch("banner");
 
   return (
     <Form {...form}>
@@ -293,7 +293,7 @@ const ProductForm = ({
         <div className="upload-field">
           {/* isFeatured */}
           Featured Product
-          {/* <Card>
+          <Card>
             <CardContent className="space-y-2 mt-2">
               <FormField
                 control={form.control}
@@ -335,7 +335,7 @@ const ProductForm = ({
                 />
               )}
             </CardContent>
-          </Card> */}
+          </Card>
         </div>
         <div>
           {/* Description */}
