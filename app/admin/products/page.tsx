@@ -32,7 +32,7 @@ const AdminProducts = async (props: {
     category,
   });
 
-  // console.log(products);
+  console.log(products);
 
   return (
     <div className="space-y-2">
