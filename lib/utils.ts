@@ -122,7 +122,7 @@ export const formatDateTime = (dateString: Date) => {
 };
 
 // Form the pagination links
-export function formUrlQuery({
+export const formUrlQuery = ({
   params,
   key,
   value,
@@ -130,8 +130,8 @@ export function formUrlQuery({
   params: string;
   key: string;
   value: string | null;
-}) {
-  const query = qs.parse(params);
+}) => {
+  const query = qs.parse(params); // Why we have to convert the query to object : because the query is a string and we can't change it directly so we have to convert it to object to change it
 
   query[key] = value;
 
@@ -144,7 +144,7 @@ export function formUrlQuery({
       skipNull: true,
     }
   );
-}
+};
 
 // Format Number
 const NUMBER_FORMATTER = new Intl.NumberFormat("en-US");

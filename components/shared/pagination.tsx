@@ -50,3 +50,9 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
 };
 
 export default Pagination;
+
+/**
+ * useSearchParams: is a hook that returns the search params of the current URL.
+ *
+ *
+ */
