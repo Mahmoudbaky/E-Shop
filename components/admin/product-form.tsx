@@ -292,6 +292,7 @@ const ProductForm = ({
         </div>
         <div className="upload-field">
           {/* isFeatured */}
+          {/* TODO: find a way to remove the existing banner */}
           Featured Product
           <Card>
             <CardContent className="space-y-2 mt-2">
