@@ -25,6 +25,31 @@ const SearchPage = async (props: {
     page = "1",
   } = await props.searchParams;
 
+  const prices = [
+    {
+      name: "$1 to $50",
+      value: "1-50",
+    },
+    {
+      name: "$51 to $100",
+      value: "51-100",
+    },
+    {
+      name: "$101 to $200",
+      value: "101-200",
+    },
+    {
+      name: "$201 to $500",
+      value: "201-500",
+    },
+    {
+      name: "$501 to $1000",
+      value: "501-1000",
+    },
+  ];
+
+  const ratings = [4, 3, 2, 1];
+
   // construct filter url
   const constructFilterUrl = ({
     c,
@@ -42,12 +67,14 @@ const SearchPage = async (props: {
     const params = { q, category, price, rating, sort, page };
 
     if (c) params.category = c;
-    if (p) params.category = p;
-    if (s) params.category = s;
-    if (r) params.category = r;
-    if (pg) params.category = pg;
+    if (p) params.price = p;
+    if (s) params.sort = s;
+    if (r) params.rating = r;
+    if (pg) params.page = pg;
 
-    return `/search?${new URLSearchParams(params).toString}`;
+    console.log("this is a url " + new URLSearchParams(params).toString());
+
+    return `/search?${new URLSearchParams(params).toString()}`;
   };
 
   const products = await getAllProducts({
@@ -90,6 +117,56 @@ const SearchPage = async (props: {
                   </Link>
                 </li>
               ))}
+          </ul>
+        </div>
+        {/* price filter */}
+        <div className="text-xl mb-2 mt-3">Price</div>
+        <div>
+          <ul className="space-y-1">
+            <li>
+              <Link
+                className={`${
+                  (price === "all" || price === "") && "font-bold"
+                }`}
+                href={constructFilterUrl({ p: "all" })}
+              >
+                All
+              </Link>
+            </li>
+            {prices.map((x) => (
+              <li key={x.value}>
+                <Link
+                  className={`${price === x.value && "font-bold"}`}
+                  href={constructFilterUrl({ p: x.value })}
+                >
+                  {x.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* rating filter */}
+        <div className="text-xl mb-2 mt-3">Rating</div>
+        <div>
+          <ul className="space-y-1">
+            <li>
+              <Link
+                className={`${rating === "all" && "font-bold"}`}
+                href={constructFilterUrl({ r: "all" })}
+              >
+                Any
+              </Link>
+            </li>
+            {ratings.map((r) => (
+              <li key={r}>
+                <Link
+                  className={`${rating === r.toString() && "font-bold"}`}
+                  href={constructFilterUrl({ r: `${r}` })}
+                >
+                  {`${r} stars & up`}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
