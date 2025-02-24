@@ -8,6 +8,7 @@ import {
   insertOrderItemSchema,
   paymentResultSchema,
   updateProfileSchema,
+  insertReviewSchema,
 } from "@/lib/validators";
 
 export type Product = z.infer<typeof insertProductsSchema> & {
@@ -34,6 +35,12 @@ export type Order = z.infer<typeof insertOrderSchema> & {
 
 export type PaymentResult = z.infer<typeof paymentResultSchema>;
 export type UpdateProfile = z.infer<typeof updateProfileSchema>;
+
+export type Review = z.infer<typeof insertReviewSchema> & {
+  id: string;
+  createdAt: Date;
+  user?: { name: string };
+};
 
 /**
  * explination for & sign:

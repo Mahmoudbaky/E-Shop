@@ -128,6 +128,32 @@ export const updateUserSchema = updateProfileSchema.extend({
 });
 
 /**
+ * Schema for validating the insertion of a review.
+ *
+ * This schema ensures that the review object contains the following properties:
+ * - `title`: A string with a minimum length of 3 characters.
+ * - `description`: A string with a minimum length of 3 characters.
+ * - `productId`: A string that is required.
+ * - `userId`: A string that is required.
+ * - `rating`: An integer between 1 and 5 (inclusive).
+ *
+ * The `z.coerce` function is used to coerce the input value into a number before applying
+ * the integer and range validations. This is useful when the input might be a string that
+ * represents a number, ensuring that it is properly validated as a number.
+ */
+export const insertReviewSchema = z.object({
+  title: z.string().min(3, "Title must be at least 3 characters"),
+  description: z.string().min(3, "Description must be at least 3 characters"),
+  productId: z.string().min(1, "Product is required"),
+  userId: z.string().min(1, "User is required"),
+  rating: z.coerce
+    .number()
+    .int()
+    .min(1, "Rating must be at least 1")
+    .max(5, "Rating must be at most 5"),
+});
+
+/**
  * explain the price configuration:- 
  * 
  * Type and Coercion:
