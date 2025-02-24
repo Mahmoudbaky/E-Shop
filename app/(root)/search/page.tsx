@@ -1,4 +1,5 @@
 import ProductCard from "@/components/shared/product/product-card";
+import { Button } from "@/components/ui/button";
 import {
   getAllProducts,
   getAllCategories,
@@ -50,6 +51,8 @@ const SearchPage = async (props: {
 
   const ratings = [4, 3, 2, 1];
 
+  const sortOrders = ["newest", "lowest", "highest", "rating"];
+
   // construct filter url
   const constructFilterUrl = ({
     c,
@@ -72,8 +75,6 @@ const SearchPage = async (props: {
     if (r) params.rating = r;
     if (pg) params.page = pg;
 
-    console.log("this is a url " + new URLSearchParams(params).toString());
-
     return `/search?${new URLSearchParams(params).toString()}`;
   };
 
@@ -84,7 +85,7 @@ const SearchPage = async (props: {
     category,
     price,
     rating,
-    sort: "desc",
+    sort,
   });
 
   const categories = await getAllCategories();
@@ -171,6 +172,35 @@ const SearchPage = async (props: {
         </div>
       </div>
       <div className="md:col-span-4 space-y-4">
+        <div className="flex-between flex-col md:flex-row my-4">
+          <div className="flex items-center">
+            {q !== "all" && q !== "" && "Query: " + q}
+            {category !== "all" && category !== "" && "Category: " + category}
+            {price !== "all" && " Price: " + price}
+            {rating !== "all" && " Rating: " + rating + " stars & up"}
+            &nbsp;
+            {(q !== "all" && q !== "") ||
+            (category !== "all" && category !== "") ||
+            rating !== "all" ||
+            price !== "all" ? (
+              <Button variant={"link"} asChild>
+                <Link href="/search">Clear</Link>
+              </Button>
+            ) : null}
+          </div>
+          <div>
+            Sort by{" "}
+            {sortOrders.map((s) => (
+              <Link
+                key={s}
+                className={`mx-2 ${sort == s && "font-bold"}`}
+                href={constructFilterUrl({ s })}
+              >
+                {s}
+              </Link>
+            ))}
+          </div>
+        </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {products.data.length === 0 && <div>No products found</div>}
           {products.data.map((product) => (
