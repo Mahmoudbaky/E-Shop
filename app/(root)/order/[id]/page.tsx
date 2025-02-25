@@ -20,7 +20,7 @@ const OrderDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
     // Create a payment intent
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(Number(order.totalPrice) * 100),
-      currency: "usd",
+      currency: "USD",
       metadata: {
         order_id: order.id,
       },
