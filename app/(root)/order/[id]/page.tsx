@@ -14,7 +14,7 @@ const OrderDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
 
   let client_secret = null;
 
-  if (order.paymentMethod === "stripe" && !order.isPaid) {
+  if (order.paymentMethod === "Stripe" && !order.isPaid) {
     // Init stripe instace
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
     // Create a payment intent
@@ -22,7 +22,7 @@ const OrderDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
       amount: Math.round(Number(order.totalPrice) * 100),
       currency: "USD",
       metadata: {
-        order_id: order.id,
+        orderId: order.id,
       },
     });
 
