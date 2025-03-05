@@ -78,7 +78,12 @@ const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
       </Button>
     </div>
   ) : (
-    <Button className="w-full" type="button" onClick={handleAddToCart}>
+    <Button
+      className="w-full"
+      type="button"
+      variant="default"
+      onClick={handleAddToCart}
+    >
       {isPending ? (
         <Loader className="w-4 h-4 animate-spin" />
       ) : (
