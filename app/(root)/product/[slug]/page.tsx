@@ -41,7 +41,7 @@ const ProductDetailsPage = async (props: {
               <div className="flex flex-col sm:flex-row sm:items-center">
                 <ProductPrice
                   value={Number(product.price)}
-                  className="w-24 rounded-full  bg-green-100 text-green-700 px-5 py-2"
+                  className="w-28 rounded-full bg-green-100 text-green-700 px-5 py-2"
                 />
               </div>
             </div>
