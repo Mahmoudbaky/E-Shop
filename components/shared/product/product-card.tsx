@@ -6,10 +6,11 @@ import { Product } from "@/types";
 import Rating from "../header/rating";
 
 const ProductCard = ({ product }: { product: Product }) => {
+  console.log(product.slug);
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="p-0 items-center">
-        <Link href={`/product/${product.slug}}`}>
+        <Link href={`/product/${product.slug}`}>
           <Image
             src={product.images[0]}
             alt={product.name}
