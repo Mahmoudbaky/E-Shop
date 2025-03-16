@@ -17,6 +17,7 @@ import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 import { getMyCart } from "./cart.action";
+import { cookies } from "next/headers";
 
 // Sign in with credentials
 export const signInWithCredentials = async (
@@ -41,12 +42,17 @@ export const signInWithCredentials = async (
 };
 
 // Sign out
-export async function signOutUser() {
+export const signOutUser = async () => {
   // get current users cart and delete it so it does not persist to next user
-  const currentCart = await getMyCart();
-  await prisma.cart.delete({ where: { id: currentCart?.id } });
+  // const currentCart = await getMyCart();
+  // if (currentCart) {
+  //   await prisma.cart.delete({ where: { id: currentCart?.id } });
+  // }
+  const cookiesObject = await cookies();
+  cookiesObject.delete("sessionCartId");
+
   await signOut();
-}
+};
 
 //Sign Up
 export const signUpUser = async (prevState: unknown, formData: FormData) => {
