@@ -14,6 +14,7 @@ import {
 export type Product = z.infer<typeof insertProductsSchema> & {
   id: string; // here w add the items that will be inserted in the db table automatically , and in zod is schema we add items that will be added to the db table through a form "so we will need to validate the data typed in the fomr"
   rating: string;
+  numReviews: number;
   createdAt: Date;
 };
 
