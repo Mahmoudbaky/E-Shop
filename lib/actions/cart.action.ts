@@ -211,6 +211,28 @@ export const removeFromCart = async (productId: string) => {
   }
 };
 
+export const getCartCount = async (id: string) => {
+  try {
+    // const session = await auth();
+    // const sessionCart = session.
+    const cookiesObject = await cookies();
+
+    const cart = await prisma.cart.findFirst({
+      where: { userId: id },
+    });
+
+    // console.log(cart);
+
+    const cartItemsCount = (cart?.items as CartItem[])
+      .map((i) => i.qty)
+      .reduce((total, current) => total + current);
+
+    return { success: true, message: "success", data: cartItemsCount };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+};
+
 /**
  * what is revalidatePath in nextJs :
  *
