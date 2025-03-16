@@ -10,6 +10,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import UserButton from "./user-button";
+import CartButton from "./cart-button";
 
 import { AlignJustify } from "lucide-react";
 
@@ -18,11 +19,7 @@ const menu = () => {
     <div className="flex justify-end gap-3">
       <nav className="hidden md:flex w-full max-w-xs gap-1">
         <ModeToggle />
-        <Button asChild variant="ghost">
-          <Link href="/cart">
-            <ShoppingCart /> cart
-          </Link>
-        </Button>
+        <CartButton />
         <UserButton />
       </nav>
       <nav className="md:hidden">
@@ -33,11 +30,7 @@ const menu = () => {
           <SheetContent className="flex flex-col items-start">
             <SheetTitle>Menu</SheetTitle>
             <ModeToggle />
-            <Button asChild variant="ghost">
-              <Link href="/cart">
-                <ShoppingCart /> cart
-              </Link>
-            </Button>
+            <CartButton />
             <UserButton />
             <SheetDescription></SheetDescription>
           </SheetContent>
