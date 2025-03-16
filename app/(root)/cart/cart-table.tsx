@@ -58,8 +58,9 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         <Image
                           src={item.image}
                           alt={item.name}
-                          width={50}
-                          height={50}
+                          width={48} // specify width here
+                          height={48} // specify height corresponding to the class
+                          className="h-12 w-12"
                         />
                         <span className="px-2">{item.name}</span>
                       </Link>

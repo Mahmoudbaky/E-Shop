@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 // Static target date (replace with desired date)
-const TARGET_DATE = new Date("2025-03-05T00:00:00");
+const TARGET_DATE = new Date("2025-03-20T00:00:00");
 
 // Function to calculate the time remaining
 const calculateTimeRemaining = (targetDate: Date) => {
@@ -78,9 +78,9 @@ const DealCountdown = () => {
         </div>
         <div className="flex justify-center">
           <Image
-            src="/images/promo.jpg"
+            src="/images/deals/google-pixel-9-pro-xl-2.jpg"
             alt="promotion"
-            width={300}
+            width={200}
             height={200}
           />
         </div>
@@ -112,9 +112,9 @@ const DealCountdown = () => {
       </div>
       <div className="flex justify-center">
         <Image
-          src="/images/promo.jpg"
+          src="/images/deals/google-pixel-9-pro-xl-2.jpg"
           alt="promotion"
-          width={300}
+          width={200}
           height={200}
         />
       </div>
