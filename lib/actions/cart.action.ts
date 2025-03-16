@@ -213,15 +213,20 @@ export const removeFromCart = async (productId: string) => {
 
 export const getCartCount = async (id: string) => {
   try {
-    // const session = await auth();
-    // const sessionCart = session.
     const cookiesObject = await cookies();
+    const sessionCartId = cookiesObject.get("sessionCartId")?.value;
+
+    const cartIdFilter: Prisma.CartWhereInput = id
+      ? {
+          userId: id,
+        }
+      : {
+          sessionCartId,
+        };
 
     const cart = await prisma.cart.findFirst({
-      where: { userId: id },
+      where: { ...cartIdFilter },
     });
-
-    // console.log(cart);
 
     const cartItemsCount = (cart?.items as CartItem[])
       .map((i) => i.qty)

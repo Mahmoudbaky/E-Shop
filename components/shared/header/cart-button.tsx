@@ -10,11 +10,7 @@ const CartButton = async () => {
 
   const res = await getCartCount(session?.user.id as string);
 
-  console.log(session?.user.id);
-
   const cartItemsCount = res.data ?? 0;
-
-  console.log(cartItemsCount);
 
   return (
     <Button variant="ghost" className="relative mr-3">

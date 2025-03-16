@@ -50,8 +50,8 @@ export const signOutUser = async () => {
   // }
   const cookiesObject = await cookies();
   cookiesObject.delete("sessionCartId");
-
   await signOut();
+  revalidatePath("/cart");
 };
 
 //Sign Up

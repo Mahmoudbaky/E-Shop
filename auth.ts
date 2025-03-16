@@ -7,6 +7,8 @@ import { cookies } from "next/headers";
 
 import { compareSync } from "bcrypt-ts-edge";
 import { authConfig } from "./auth.config";
+import { CartItem } from "./types";
+import { InputJsonValue } from "@prisma/client/runtime/library";
 
 export const config = {
   pages: {
@@ -97,7 +99,11 @@ export const config = {
               where: { sessionCartId },
             });
 
-            if (sessionCart) {
+            const userCart = await prisma.cart.findFirst({
+              where: { userId: user.id },
+            });
+
+            if (sessionCart && !userCart) {
               // Delete current user cart
               await prisma.cart.deleteMany({
                 where: { userId: user.id },
@@ -107,6 +113,49 @@ export const config = {
               await prisma.cart.update({
                 where: { id: sessionCart.id },
                 data: { userId: user.id },
+              });
+            } else if (sessionCart && userCart) {
+              // const allItems = [...userCart.items, ...sessionCart.items];
+
+              // const duplicates = (allItems as CartItem[]).map(item => item)
+
+              const mergedItems = [
+                ...userCart.items,
+                ...sessionCart.items,
+              ] as CartItem[];
+
+              const uniqueItems = mergedItems.reduce((acc, item) => {
+                const existingItem = acc.find(
+                  (i) => i.productId === item.productId
+                );
+                if (existingItem) {
+                  existingItem.qty += item.qty;
+                } else {
+                  acc.push(item);
+                }
+                return acc;
+              }, [] as CartItem[]);
+
+              await prisma.cart.update({
+                where: { id: userCart.id },
+                data: {
+                  items: uniqueItems as InputJsonValue[],
+                  itemsPrice:
+                    Number(userCart.itemsPrice) +
+                    Number(sessionCart.itemsPrice),
+                  shippingPrice:
+                    Number(userCart.shippingPrice) +
+                    Number(sessionCart.shippingPrice),
+                  taxPrice:
+                    Number(userCart.taxPrice) + Number(sessionCart.taxPrice),
+                  totalPrice:
+                    Number(userCart.totalPrice) +
+                    Number(sessionCart.totalPrice),
+                },
+              });
+
+              await prisma.cart.deleteMany({
+                where: { sessionCartId: sessionCart.sessionCartId },
               });
             }
           }
