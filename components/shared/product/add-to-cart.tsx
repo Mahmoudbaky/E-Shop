@@ -88,7 +88,7 @@ const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
         <Loader className="w-4 h-4 animate-spin" />
       ) : (
         <Plus className="w-4 h-4" />
-      )}{" "}
+      )}
       Add To Cart
     </Button>
   );
