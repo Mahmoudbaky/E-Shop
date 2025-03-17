@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -7,14 +8,16 @@ import {
 import ProductPrice from "./product-price";
 import Link from "next/link";
 import Image from "next/image";
-import { Product } from "@/types";
+import { CartItem, Product } from "@/types";
 import Rating from "../header/rating";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import AddToCartButton from "@/components/add-to-cart-button";
 
 const ProductCard = ({ product }: { product: Product }) => {
-  console.log(product.slug);
+  const handleAddToCart = () => {};
+
   return (
     <Card className="w-full max-w-sm overflow-hidden transition-all hover:shadow-lg">
       <div className="aspect-square relative overflow-hidden bg-muted">
@@ -58,8 +61,27 @@ const ProductCard = ({ product }: { product: Product }) => {
         <p className="text-sm text-muted-foreground">{product.description}</p>
       </CardContent>
       <CardFooter className="p-4 flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">In stock</div>
-        <Button className="w-1/2">Add to Cart</Button>
+        <div className="text-sm text-muted-foreground">
+          {product.stock > 0 ? (
+            <h1>in stock</h1>
+          ) : (
+            <h1 className="text-red-500">out of stock</h1>
+          )}
+        </div>
+        {product.stock > 0 ? (
+          <AddToCartButton
+            item={{
+              productId: product.id,
+              name: product.name,
+              slug: product.slug,
+              price: product.price,
+              qty: 1,
+              image: product.images![0],
+            }}
+          />
+        ) : (
+          <></>
+        )}
       </CardFooter>
     </Card>
   );
