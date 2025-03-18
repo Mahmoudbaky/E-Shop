@@ -5,6 +5,7 @@ import {
   getAllCategories,
 } from "@/lib/actions/products.actions";
 import { PAGE_SIZE } from "@/lib/constants";
+import { convertPrismaToJs } from "@/lib/utils";
 import Link from "next/link";
 
 // constants
@@ -241,7 +242,10 @@ const SearchPage = async (props: {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {products.data.length === 0 && <div>No products found</div>}
           {products.data.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={convertPrismaToJs(product)}
+            />
           ))}
         </div>
       </div>
