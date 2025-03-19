@@ -21,9 +21,6 @@ const SuccessPage = async (props: {
   const { id } = await props.params;
   const { payment_intent: paymentIntentId } = await props.searchParams;
 
-  console.log(id);
-  //   console.log(payment_intent);
-
   const order = await getOrderById(id);
   if (!order) notFound();
 
