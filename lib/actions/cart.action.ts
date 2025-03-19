@@ -72,13 +72,9 @@ export const addItemToCart = async (data: CartItem) => {
         message: `${product.name} added to cart`,
       };
     } else {
-      // console.log({ cartProducts: cart.items[0].productId });
-
       const itemExist = (cart.items as CartItem[]).find(
         (i) => i.productId === item.productId
       );
-
-      console.log({ isExist: itemExist });
 
       if (itemExist) {
         // check stock

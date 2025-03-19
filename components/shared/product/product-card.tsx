@@ -16,8 +16,6 @@ import { Badge } from "@/components/ui/badge";
 import AddToCartButton from "@/components/add-to-cart-button";
 
 const ProductCard = ({ product }: { product: Product }) => {
-  const handleAddToCart = () => {};
-
   return (
     <Card className="w-full max-w-sm overflow-hidden transition-all hover:shadow-lg">
       <div className="aspect-square relative overflow-hidden bg-muted">
@@ -30,7 +28,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             alt={product.name}
             height={300}
             width={300}
-            className="max-h-[300px] w-full object-cover"
+            className="max-h-[300px] w-full object-cover bg-white"
             priority={true}
           />
         </Link>
