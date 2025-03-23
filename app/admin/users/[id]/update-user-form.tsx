@@ -25,12 +25,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { ControllerRenderProps, useForm } from "react-hook-form";
 import { z } from "zod";
+import { useSession } from "next-auth/react";
 
 const UpdateUserForm = ({
   user,
 }: {
   user: z.infer<typeof updateUserSchema>;
 }) => {
+  const { data: session, update } = useSession();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -54,7 +56,18 @@ const UpdateUserForm = ({
           description: res.message,
         });
       }
+      const newSession = {
+        ...session,
+        user: {
+          ...session?.user,
+          name: values.name,
+          role: values.role,
+        },
+      };
 
+      await update(newSession);
+
+      console.log("*********" + session?.user.role);
       /**
        *
        * The `form.reset()` function is called after a successful form submission to reset the form fields to their initial values.
