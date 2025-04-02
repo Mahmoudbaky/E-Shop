@@ -42,15 +42,20 @@ export const signInWithCredentials = async (
 };
 
 // Sign out
-export const signOutUser = async () => {
+export const signOutUser = async (callbackUrl: string) => {
   // get current users cart and delete it so it does not persist to next user
   // const currentCart = await getMyCart();
   // if (currentCart) {
   //   await prisma.cart.delete({ where: { id: currentCart?.id } });
   // }
+
+  console.log("*****************" + callbackUrl);
   const cookiesObject = await cookies();
   cookiesObject.delete("sessionCartId");
-  await signOut();
+
+  const redirectUrl = `/sign-in${callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`;
+
+  await signOut({ redirectTo: redirectUrl, redirect: true });
   revalidatePath("/cart");
 };
 

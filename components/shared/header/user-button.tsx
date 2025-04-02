@@ -10,7 +10,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserIcon } from "lucide-react";
-
+import SignOutForm from "./sign-out-form";
+/**
+ * UserButton is a component that displays a dropdown menu with user information and actions.
+ * If the user is not signed in, it displays a sign in button.
+ * If the user is signed in, it displays a dropdown menu with the user's name and email,
+ * as well as links to the user's profile, order history, and (if the user is an admin) the admin dashboard.
+ * The dropdown menu also includes a sign out button.
+ *
+ * @returns {JSX.Element} The UserButton component.
+ * @example
+ * <UserButton />
+ */
 const UserButton = async () => {
   const session = await auth();
 
@@ -69,14 +80,7 @@ const UserButton = async () => {
           )}
 
           <DropdownMenuItem className="p-0 mb-1">
-            <form action={signOutUser} className="w-full">
-              <Button
-                className="w-full py-4 px-2 h-4 justify-start"
-                variant="ghost"
-              >
-                Sign Out
-              </Button>
-            </form>
+            <SignOutForm />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
