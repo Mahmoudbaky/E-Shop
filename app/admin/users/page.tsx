@@ -14,6 +14,8 @@ import { getAllUsers, deleteUser } from "@/lib/actions/user.actions";
 import { formatId } from "@/lib/utils";
 import { Metadata } from "next";
 import Link from "next/link";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Admin users",
@@ -27,6 +29,10 @@ const AdminUsersPage = async (params: {
 }) => {
   const { page = "1", query: searchText } = await params.searchParams;
   const users = await getAllUsers({ page: Number(page), query: searchText });
+
+  const session = await auth();
+
+  if (session?.user?.role !== "admin") redirect("/admin/unauthorized");
 
   return (
     <div className="space-y-2">

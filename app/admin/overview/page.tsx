@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -24,7 +25,7 @@ const summary = await getOrderSummary();
 const AdminOverviewPage = async () => {
   const session = await auth();
 
-  if (session?.user.role !== "admin") throw new Error("User not authorized");
+  if (session?.user.role !== "admin") redirect("/admin/unauthorized");
 
   return (
     <div className=" space-y-2 ">

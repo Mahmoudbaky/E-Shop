@@ -59,6 +59,6 @@ export const reviewFormDefaultValues = {
   rating: 0,
 };
 
-export const SENDER_EMAIL = process.env.SENDER_EMAIL || "houdabaky@hotmail.com";
+export const SENDER_EMAIL = "20190689@hti.edu.eg";
 
-// onboarding@resend.dev
+// process.env.SENDER_EMAIL ||

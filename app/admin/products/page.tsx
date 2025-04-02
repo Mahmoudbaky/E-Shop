@@ -12,6 +12,8 @@ import {
 import DeleteDialog from "@/components/shared/delete-dialog";
 import { formatCurrency, formatId } from "@/lib/utils";
 import Pagination from "@/components/shared/pagination";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 const AdminProducts = async (props: {
   searchParams: Promise<{
@@ -25,6 +27,10 @@ const AdminProducts = async (props: {
   const page = Number(searchParams.page) || 1;
   const searchText = searchParams.query || "";
   const category = searchParams.category || "";
+
+  const session = await auth();
+
+  if (session?.user?.role !== "admin") redirect("/admin/unauthorized");
 
   const products = await getAllProducts({
     query: searchText,

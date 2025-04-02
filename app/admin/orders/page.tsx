@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Pagination from "@/components/shared/pagination";
 import DeleteDialog from "@/components/shared/delete-dialog";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Admin Orders",
@@ -26,8 +27,7 @@ const AdminOrdersPage = async (props: {
 
   const session = await auth();
 
-  if (session?.user?.role !== "admin")
-    throw new Error("User is not authorized");
+  if (session?.user?.role !== "admin") redirect("/admin/unauthorized");
 
   const orders = await getAllOrders({
     page: Number(page),
