@@ -55,7 +55,10 @@ export const signOutUser = async (callbackUrl: string) => {
 
   const redirectUrl = `/sign-in${callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`;
 
-  await signOut({ redirectTo: redirectUrl, redirect: true });
+  await signOut({
+    redirectTo: redirectUrl,
+    redirect: callbackUrl === "/" || "/cart" ? false : true,
+  });
   revalidatePath("/cart");
 };
 
