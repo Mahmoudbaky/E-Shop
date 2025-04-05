@@ -35,8 +35,6 @@ async function main() {
       data: products,
     });
   }
-
-  console.log("done");
 }
 
 main()

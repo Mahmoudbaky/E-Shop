@@ -67,7 +67,6 @@ const UpdateUserForm = ({
 
       await update(newSession);
 
-      console.log("*********" + session?.user.role);
       /**
        *
        * The `form.reset()` function is called after a successful form submission to reset the form fields to their initial values.

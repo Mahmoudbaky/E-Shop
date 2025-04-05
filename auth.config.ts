@@ -21,7 +21,6 @@ export const authConfig = {
 
       // Check if user is not authenticated and accessing a protected path
       if (!auth && protectedPaths.some((p) => p.test(pathname))) {
-        // console.log("Not authenticated and accessing a protected path");
         return false;
       }
 

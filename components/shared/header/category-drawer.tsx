@@ -14,8 +14,6 @@ import Link from "next/link";
 const CategoryDrawer = async () => {
   const categories = await getAllCategories();
 
-  // console.log(categories)   why not working ??????!!!!!
-
   return (
     <Drawer direction="left">
       <DrawerTrigger asChild>

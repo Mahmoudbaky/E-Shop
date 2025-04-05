@@ -30,8 +30,6 @@ const SuccessPage = async (props: {
     paymentIntent.metadata.orderId == null ||
     paymentIntent.metadata.orderId !== order.id.toString()
   ) {
-    console.log(paymentIntent.metadata.orderId);
-    console.log("in the if statement");
     return notFound();
   }
 

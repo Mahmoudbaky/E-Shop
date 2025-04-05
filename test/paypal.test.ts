@@ -2,7 +2,7 @@ import { generateAccessToken, paypal } from "../lib/paypal";
 
 test("generate access token from paypal", async () => {
   const accessToken = await generateAccessToken();
-  console.log(accessToken);
+
   expect(typeof accessToken).toBe("string");
   expect(accessToken.length).toBeGreaterThan(0);
 });
@@ -13,7 +13,6 @@ test("creates a paypal order", async () => {
   const price = 10.0;
 
   const orderResponse = await paypal.createOrder(price);
-  console.log(orderResponse);
 
   expect(orderResponse).toHaveProperty("id");
   expect(orderResponse).toHaveProperty("status");

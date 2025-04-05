@@ -14,5 +14,4 @@ import sampleData from "./sample-data";
 
   await prisma.product.createMany({ data: sampleData.products });
   // await prisma.user.createMany({ data: sampleData.users });
-  console.log("done");
 })();
