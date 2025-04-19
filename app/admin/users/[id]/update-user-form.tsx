@@ -56,23 +56,7 @@ const UpdateUserForm = ({
           description: res.message,
         });
       }
-      const newSession = {
-        ...session,
-        user: {
-          ...session?.user,
-          name: values.name,
-          role: values.role,
-        },
-      };
 
-      await update(newSession);
-
-      /**
-       *
-       * The `form.reset()` function is called after a successful form submission to reset the form fields to their initial values.
-       * This ensures that the form is cleared and ready for new input, preventing any stale data from being submitted in future requests.
-       */
-      form.reset();
       router.push("/admin/users");
     } catch (error) {
       toast({
