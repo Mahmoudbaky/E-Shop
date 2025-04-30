@@ -29,7 +29,7 @@ const UserButton = async () => {
     return (
       <Button asChild variant="outline">
         <Link href="/sign-in">
-          <UserIcon /> Sgin in
+          <UserIcon /> Sign in
         </Link>
       </Button>
     );
