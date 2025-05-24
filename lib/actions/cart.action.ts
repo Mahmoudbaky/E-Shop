@@ -12,6 +12,8 @@ import { revalidatePath } from "next/cache";
 import { Prisma, Product } from "@prisma/client";
 
 const calcPrice = async (items: CartItem[]) => {
+  const cart = await getMyCart();
+
   let itemsPrice = 0;
 
   for (const item of items) {
@@ -48,7 +50,6 @@ export const addItemToCart = async (data: CartItem) => {
 
     // validate the item passed from the product page
     const item = cartItemSchema.parse(data);
-    console.log(item);
 
     // Find product in data base
     const product = await prisma.product.findFirst({
@@ -58,11 +59,14 @@ export const addItemToCart = async (data: CartItem) => {
 
     if (!cart) {
       // Create new cart object
+
+      // calcPrice([item]).then((res) => console.log(res));
+
       const newCart = insertCartSchema.parse({
         userId: userId,
         items: [item],
         sessionCartId: sessionCartId,
-        ...calcPrice([item]),
+        ...(await calcPrice([item])),
       });
 
       // Add to database
@@ -108,7 +112,7 @@ export const addItemToCart = async (data: CartItem) => {
         where: { id: cart.id },
         data: {
           items: cart.items as Prisma.CartUpdateitemsInput[],
-          ...calcPrice(cart.items as CartItem[]),
+          ...(await calcPrice(cart.items as CartItem[])),
         },
       });
 
@@ -122,6 +126,7 @@ export const addItemToCart = async (data: CartItem) => {
       };
     }
   } catch (error) {
+    // console.log(error);
     return {
       success: false,
       message: formatError(error),
@@ -196,7 +201,7 @@ export const removeFromCart = async (productId: string) => {
       where: { id: cart.id },
       data: {
         items: cart.items as Prisma.CartUpdateitemsInput[],
-        ...calcPrice(cart.items as CartItem[]),
+        ...(await calcPrice(cart.items as CartItem[])),
       },
     });
 

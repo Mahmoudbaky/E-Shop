@@ -20,15 +20,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
+import { Product } from "@/types";
 
-const CartTable = ({ cart }: { cart?: Cart }) => {
+const CartTable = ({
+  cart,
+  products,
+}: {
+  cart?: Cart;
+  products?: Product[];
+}) => {
   const router = useRouter();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   return (
     <div>
-      <h1 className="py-4 h2-bold">Shopping Cart</h1>
       {!cart || cart.items.length === 0 ? (
         <div>
           <p>Your cart is empty</p>
@@ -114,7 +120,16 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         )}
                       </Button>
                     </TableCell>
-                    <TableCell className="text-right">${item.price}</TableCell>
+                    {products &&
+                      products.map((product) => {
+                        if (product.id === item.productId) {
+                          return (
+                            <TableCell key={product.id} className="text-right">
+                              {formatCurrency(product.price)}
+                            </TableCell>
+                          );
+                        }
+                      })}
                   </TableRow>
                 ))}
               </TableBody>

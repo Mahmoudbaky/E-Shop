@@ -66,16 +66,18 @@ const ProductCard = async ({ product }: { product: Product }) => {
           )}
         </div>
         {product.stock > 0 ? (
-          <AddToCart
-            cart={cart}
-            item={{
-              productId: product.id,
-              name: product.name,
-              slug: product.slug,
-              qty: 1,
-              image: product.images![0],
-            }}
-          />
+          <div className="w-1/2">
+            <AddToCart
+              cart={cart}
+              item={{
+                productId: product.id,
+                name: product.name,
+                slug: product.slug,
+                qty: 1,
+                image: product.images![0],
+              }}
+            />
+          </div>
         ) : (
           <></>
         )}
