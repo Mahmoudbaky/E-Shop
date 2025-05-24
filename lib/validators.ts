@@ -7,7 +7,6 @@ const currency = z
   .refine((value) =>
     /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value)))
   );
-
 // schema for inserting products
 export const insertProductsSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -53,7 +52,7 @@ export const cartItemSchema = z.object({
   slug: z.string().min(1, "Slug is required"),
   qty: z.number().int().nonnegative("Quantity must be a positive number"), // nonnegative means the number should be greater than or equal to 0
   image: z.string().min(1, "Image is required"),
-  // price: currency,
+  price: currency.optional(),
 });
 
 export const insertCartSchema = z.object({
