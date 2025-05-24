@@ -9,15 +9,20 @@ import { cookies } from "next/headers";
 
 // re
 import { revalidatePath } from "next/cache";
-import { Prisma } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 
-const calcPrice = (items: CartItem[]) => {
-  const itemsPrice = round2(
-      items.reduce((acc, item) => acc + Number(item.price) * item.qty, 0)
-    ),
-    shippingPrice = round2(itemsPrice > 100 ? 0 : 10),
-    taxPrice = round2(0.15 * itemsPrice),
-    totalPrice = round2(itemsPrice + taxPrice + shippingPrice);
+const calcPrice = async (items: CartItem[]) => {
+  let itemsPrice = 0;
+
+  for (const item of items) {
+    const product = await prisma.product.findFirst({
+      where: { id: item.productId },
+    });
+    itemsPrice += Number(product?.price) * item.qty;
+  }
+  const shippingPrice = round2(itemsPrice > 100 ? 0 : 10);
+  const taxPrice = round2(0.15 * itemsPrice);
+  const totalPrice = round2(itemsPrice + taxPrice + shippingPrice);
 
   return {
     itemsPrice: itemsPrice.toFixed(2),
@@ -29,6 +34,7 @@ const calcPrice = (items: CartItem[]) => {
 
 export const addItemToCart = async (data: CartItem) => {
   try {
+    // console.log(data);
     // check for cart cookie
     const sessionCartId = (await cookies()).get("sessionCartId")?.value;
     if (!sessionCartId) throw new Error("Cart session not found");
@@ -42,6 +48,7 @@ export const addItemToCart = async (data: CartItem) => {
 
     // validate the item passed from the product page
     const item = cartItemSchema.parse(data);
+    console.log(item);
 
     // Find product in data base
     const product = await prisma.product.findFirst({

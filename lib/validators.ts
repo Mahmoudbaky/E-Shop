@@ -53,7 +53,7 @@ export const cartItemSchema = z.object({
   slug: z.string().min(1, "Slug is required"),
   qty: z.number().int().nonnegative("Quantity must be a positive number"), // nonnegative means the number should be greater than or equal to 0
   image: z.string().min(1, "Image is required"),
-  price: currency,
+  // price: currency,
 });
 
 export const insertCartSchema = z.object({

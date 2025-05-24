@@ -1,4 +1,3 @@
-"use client";
 import {
   Card,
   CardContent,
@@ -8,14 +7,14 @@ import {
 import ProductPrice from "./product-price";
 import Link from "next/link";
 import Image from "next/image";
-import { CartItem, Product } from "@/types";
-import Rating from "../header/rating";
-import { Button } from "@/components/ui/button";
+import { Product } from "@/types";
 import { Star } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import AddToCartButton from "@/components/add-to-cart-button";
+import AddToCart from "./add-to-cart";
+import { getMyCart } from "@/lib/actions/cart.action";
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = async ({ product }: { product: Product }) => {
+  const cart = await getMyCart();
+
   return (
     <Card className="w-full max-w-sm overflow-hidden transition-all hover:shadow-lg">
       <div className="aspect-square relative overflow-hidden bg-muted">
@@ -67,12 +66,12 @@ const ProductCard = ({ product }: { product: Product }) => {
           )}
         </div>
         {product.stock > 0 ? (
-          <AddToCartButton
+          <AddToCart
+            cart={cart}
             item={{
               productId: product.id,
               name: product.name,
               slug: product.slug,
-              price: product.price,
               qty: 1,
               image: product.images![0],
             }}
